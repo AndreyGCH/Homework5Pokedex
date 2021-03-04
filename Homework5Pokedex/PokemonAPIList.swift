@@ -13,7 +13,7 @@ struct PokemonAPIList: Decodable{
     var results: [PokemonListEntry]
 }
 
-struct PokemonListEntry: Decodable{
+struct PokemonListEntry: Codable{
     var name: String
     var url: String
 }
