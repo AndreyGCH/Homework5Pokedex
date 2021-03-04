@@ -7,6 +7,8 @@
 
 import Foundation
 
+
+
 struct PokemonAPIList: Decodable{
     var results: [PokemonListEntry]
 }
@@ -14,4 +16,19 @@ struct PokemonAPIList: Decodable{
 struct PokemonListEntry: Decodable{
     var name: String
     var url: String
+}
+
+struct PokemonDetailStuct: Decodable{
+    var height: String
+    var weight: String
+    var id: String
+    var sprites: SpritesData
+}
+
+struct SpritesData: Decodable{
+    var frontDefault: String
+    
+    enum CodingKeys: String, CodingKey{
+        case frontDefault = "front_default"
+    }
 }
