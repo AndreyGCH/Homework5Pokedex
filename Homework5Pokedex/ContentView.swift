@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var networkingManager = NetworkingManager()
+    @ObservedObject var networkingManager = NetworkingManager()
     var body: some View {
         VStack(){
             NavigationView{
-                    List(networkingManager.pokemonList.results, id: \.url){
-                        pokemon in
-                        NavigationLink(
-                            destination: PokemonDetail(pokemon:pokemon)){
-                            Text(pokemon.name.capitalized)
-                        }
-                    }.navigationBarTitle(Text("Pokedex"))
+                List(networkingManager.pokemonList.results, id: \.url){
+                    pokemon in
+                    NavigationLink(
+                        destination: PokemonDetail(pokemon:pokemon)){
+                        Text(pokemon.name.capitalized)
+                    }
+                }.navigationBarTitle(Text("Pokedex"))
             }
         }
     }

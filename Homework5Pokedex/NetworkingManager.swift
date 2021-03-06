@@ -10,23 +10,32 @@ import SwiftUI
 import Combine
 
 class NetworkingManager: ObservableObject{
-    var didChange = PassthroughSubject<NetworkingManager, Never>()
-    
-    var pokemonList = PokemonAPIList(results:[]){
-        didSet{
-            didChange.send(self)
-        }
-    }
+   // var didChange = PassthroughSubject<NetworkingManager, Never>()
+    @Published var pokemonList = PokemonAPIList(results:[])
+//    var pokemonList = PokemonAPIList(results:[]){
+//        didSet{
+//            didChange.send(self)
+//        }
+//    }
     init(){
         guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon") else {return}
-        URLSession.shared.dataTask(with: url){(data,_,_) in
-            guard let data = data else {return}
+        URLSession.shared.dataTask(with: url){(data,response,_) in
             
-            let pokemonList = try! JSONDecoder().decode(PokemonAPIList.self, from: data)
-            
-            DispatchQueue.main.async {
-                self.pokemonList = pokemonList
+            guard let data = data else {
+                print("data null")
+                return}
+            if let pokemonList = try?
+                JSONDecoder().decode(PokemonAPIList.self, from: data){
+                DispatchQueue.main.async {
+                    self.pokemonList = pokemonList
+                }
+                return
             }
+            //let pokemonList = try! JSONDecoder().decode(PokemonAPIList.self, from: data)
+            
+            //DispatchQueue.main.async {
+            //    self.pokemonList = pokemonList
+            //}
         }.resume()
     }
 }
