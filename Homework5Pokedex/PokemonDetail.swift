@@ -19,10 +19,10 @@ class PokemonDetailViewModel: ObservableObject {
         URLSession.shared.dataTask(with: url){data, _, _ in
             print(url)
             if let data = data {
-                if let detail = try? JSONDecoder().decode(PokemonDetailStuct.self, from: data){
+                if let PokemonDetailStruct = try? JSONDecoder().decode(PokemonDetailStuct.self, from: data){
                     DispatchQueue.main.async {
-                        print(detail.id + "inner function")
-                        self.PokemonDetailStruct = detail
+                        print(PokemonDetailStruct.id + "inner function")
+                        self.PokemonDetailStruct = PokemonDetailStruct
                     }
                     return
                 }else{
@@ -46,6 +46,11 @@ struct PokemonDetail: View {
     var body: some View {
         VStack(){
             Text(PokemonDetailVM.PokemonDetailStruct.height)
+            Text("Name: \(pokemon.name)")
+            Text("URL: \(pokemon.url)")
+            Text("Weight: ")
+            Text("Height: ")
+            Text("Id: ")
         }.onAppear(perform: {
             print("Detail \(pokemon.name) id:\(PokemonDetailVM.PokemonDetailStruct.id) ")
             self.PokemonDetailVM.getData(url:pokemon.url)
