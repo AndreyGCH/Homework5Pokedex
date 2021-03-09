@@ -31,11 +31,6 @@ class NetworkingManager: ObservableObject{
                 }
                 return
             }
-            //let pokemonList = try! JSONDecoder().decode(PokemonAPIList.self, from: data)
-            
-            //DispatchQueue.main.async {
-            //    self.pokemonList = pokemonList
-            //}
         }.resume()
     }
 }

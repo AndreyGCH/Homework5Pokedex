@@ -22,7 +22,7 @@ struct PokemonDetailStuct: Decodable{
     var height: String
     var weight: String
     var id: String
-    var sprites: SpritesData
+   // var sprites: SpritesData
 }
 
 struct SpritesData: Decodable{

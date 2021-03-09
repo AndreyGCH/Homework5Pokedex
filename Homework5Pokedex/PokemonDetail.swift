@@ -8,26 +8,31 @@ import Foundation
 import SwiftUI
 
 class PokemonDetailViewModel: ObservableObject {
-    @Published var PokemonDetailStruct = PokemonDetailStuct(height: "", weight: "", id: "", sprites: SpritesData(frontDefault: ""))
+    @Published var PokemonDetailStruct = PokemonDetailStuct(height: "", weight: "", id: "")
     
     func getData(url:String){
         guard let url = URL(string:url) else {
             print("Error URL")
             return
         }
-        let request = URLRequest(url: url)
-        URLSession.shared.dataTask(with: request){data, _, _ in
+        print("get data")
+        URLSession.shared.dataTask(with: url){data, _, _ in
+            print(url)
             if let data = data {
-                if let response = try? JSONDecoder().decode(PokemonDetailStuct.self, from: data){
+                if let detail = try? JSONDecoder().decode(PokemonDetailStuct.self, from: data){
                     DispatchQueue.main.async {
-                        self.PokemonDetailStruct = response
+                        print(detail.id + "inner function")
+                        self.PokemonDetailStruct = detail
                     }
                     return
+                }else{
+                    print("No detail")
                 }
+            }else{
+                print("No data")
             }
             
     }.resume()
-       // print("Get Detail")
     }
 }
 
@@ -36,44 +41,15 @@ struct PokemonDetail: View {
     @ObservedObject var PokemonDetailVM = PokemonDetailViewModel()
     
     
-//    func getData(){
-//        guard let url = URL(string: pokemon.url) else {
-//            print("Error URL")
-//            return
-//        }
-//        let request = URLRequest(url: url)
-//        URLSession.shared.dataTask(with: request){data, _, _ in
-//            if let data = data {
-//                if let response = try? JSONDecoder().decode(PokemonDetailStuct.self, from: data){
-//                    DispatchQueue.main.async {
-//                        self.detail = response
-//                    }
-//                    return
-//                }
-//            }
-//            //DispatchQueue.main.async {
-//                //if let data = data{
-//                //    do{
-//                //        let decoder = JSONDecoder()
-//                //        let decodedData = try decoder.decode(PokemonDetailStuct.self, from: data)
-//                //        self.detail = decodedData
-//                //    }catch{
-//                //        print("Error!!")
-//                //    }
-//            //    }
-//
-//    }.resume()
-//       // print("Get Detail")
-//    }
+
     
     var body: some View {
-        //onAppear(){
-        //    self.getData()
-        //}
         VStack(){
             Text(PokemonDetailVM.PokemonDetailStruct.height)
         }.onAppear(perform: {
+            print("Detail \(pokemon.name) id:\(PokemonDetailVM.PokemonDetailStruct.id) ")
             self.PokemonDetailVM.getData(url:pokemon.url)
+            print(self.PokemonDetailVM.PokemonDetailStruct.id)
         })
     }
     
